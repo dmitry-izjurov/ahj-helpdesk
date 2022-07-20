@@ -1,73 +1,82 @@
 import {
-  wrapperButton, wrapperTop, printTopBottom, buttons,
+  elemWrapper, elemList, elemLi, getFullText, formAddTicket, formEditTicket, formDeleteTicket
 } from './utils';
 
 export default class Inspector {
   constructor() {
-    this.topOrBottom = undefined;
-    this.oldElem = undefined;
+    this.data = undefined;
   }
 
-  checkWindow() {
-    const viewportHeight = window.innerHeight;
-    window.addEventListener('scroll', () => {
-      if (this.topOrBottom === 'top' && this.oldElem.getBoundingClientRect().top < 130) {
-        this.oldElem.closest('.wrapper__button').querySelector('.popopver').remove();
-        this.oldElem.closest('.wrapper__button').insertAdjacentHTML('beforeend', printTopBottom(wrapperButton));
-        this.getOffset(document.querySelector('.popopver'), this.oldElem);
-        this.topOrBottom = 'bottom';
-      }
+  getServer() {
+    const xhr = new XMLHttpRequest();
+    const url = 'http://localhost:7071/?method=allTicket';
+    xhr.open('GET', url);
+    xhr.send();
 
-      if (this.topOrBottom === 'bottom' && viewportHeight - this.oldElem.getBoundingClientRect().bottom < 130) {
-        this.oldElem.closest('.wrapper__button').querySelector('.popopver').remove();
-        this.oldElem.closest('.wrapper__button').insertAdjacentHTML('afterbegin', printTopBottom(wrapperTop));
-        this.getOffset(document.querySelector('.popopver'), this.oldElem);
-        this.topOrBottom = 'top';
+    xhr.addEventListener('load', () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            this.data = JSON.parse(xhr.responseText);
+              console.log(this.data);
+              if (this.data.length > 0) {
+                this.data.forEach(a => {
+                  let statusChecked = '';
+                  if (a.status) statusChecked = 'checked';
+                  elemList.insertAdjacentHTML('beforeend', elemLi(a.name, a.created, statusChecked, a.id));
+                });
+              }
+          } catch (e) {
+              console.error(e);
+          }
       }
     });
   }
 
-  clickButtons() {
-    buttons.forEach((a, i) => {
-      a.addEventListener('click', (e) => {
-        if (!this.oldElem) {
-          const buttomTop = buttons[i].getBoundingClientRect().top;
-          this.oldElem = e.target;
-          if (buttomTop > 130) {
-            buttons[i].closest('.wrapper__button').insertAdjacentHTML('afterbegin', printTopBottom(wrapperTop));
-            this.getOffset(document.querySelector('.popopver'), buttons[i]);
-            this.topOrBottom = 'top';
-          } else {
-            buttons[i].closest('.wrapper__button').insertAdjacentHTML('beforeend', printTopBottom(wrapperButton));
-            this.getOffset(document.querySelector('.popopver'), buttons[i]);
-            this.topOrBottom = 'bottom';
-          }
-        } else if (this.oldElem === e.target && this.topOrBottom) {
-          this.oldElem.closest('.wrapper__button').querySelector('.popopver').remove();
-          this.oldElem = undefined;
-          this.topOrBottom = undefined;
-        } else if (this.oldElem !== e.target && this.topOrBottom) {
-          const buttomTop = buttons[i].getBoundingClientRect().top;
-          this.oldElem.closest('.wrapper__button').querySelector('.popopver').remove();
-          this.oldElem = e.target;
-          if (buttomTop > 130) {
-            buttons[i].closest('.wrapper__button').insertAdjacentHTML('afterbegin', printTopBottom(wrapperTop));
-            this.getOffset(document.querySelector('.popopver'), buttons[i]);
-            this.topOrBottom = 'top';
-          } else {
-            buttons[i].closest('.wrapper__button').insertAdjacentHTML('beforeend', printTopBottom(wrapperButton));
-            this.getOffset(document.querySelector('.popopver'), buttons[i]);
-            this.topOrBottom = 'bottom';
-          }
-        }
-      });
-    });
-  }
+  getAction(elem) {
+    const button = elem.closest('.button');
+    const buttonCancel = elem.closest('.form__button-reset');
+    const textTicket = elem.closest('.text');
+    if (button) {
+      if (button.classList.contains('button_add')) {
+        elemWrapper.insertAdjacentHTML('afterbegin', formAddTicket);
+      }
+      
+      if (button.classList.contains('button_edit')) {
+        elemWrapper.insertAdjacentHTML('afterbegin', formEditTicket);
+      }
 
-  getOffset(elemPopopver, elemButton) {
-    console.log(this.topOrBottom);
-    // eslint-disable-next-line no-param-reassign
-    elemPopopver.style.left = `${String((Number((getComputedStyle(elemButton).width).substring(0, getComputedStyle(elemButton).width.length - 2))
-    - Number(getComputedStyle(elemPopopver).width.substring(0, getComputedStyle(elemPopopver).width.length - 2))) / 2)}px`;
+      if (button.classList.contains('button_remove')) {
+        elemWrapper.insertAdjacentHTML('afterbegin', formDeleteTicket);
+      }
+    }
+
+    if (buttonCancel) {
+      elem.closest('.wrapper__popup').remove();
+    }
+
+    if (textTicket) {
+      console.log(textTicket.dataset.id);
+      // const xhr = new XMLHttpRequest();
+      // const url = 'http://localhost:7071/?method=allTicket';
+      // xhr.open('GET', url);
+      // xhr.send();
+
+      // xhr.addEventListener('load', () => {
+      //   if (xhr.status >= 200 && xhr.status < 300) {
+      //     try {
+      //         const data = JSON.parse(xhr.responseText);
+      //         if (data.length > 0) {
+      //           data.forEach(a => {
+      //             let statusChecked = '';
+      //             if (a.status) statusChecked = 'checked';
+      //             elemList.insertAdjacentHTML('beforeend', elemLi(a.name, a.created, statusChecked));
+      //           });
+      //         }
+      //     } catch (e) {
+      //         console.error(e);
+      //     }
+      //   }
+      // });
+    }
   }
 }

@@ -1,5 +1,9 @@
 import Inspector from './Inspector';
+import { elemWrapper } from './utils';
 
 const inspector = new Inspector();
-inspector.checkWindow();
-inspector.clickButtons();
+inspector.getServer();
+
+elemWrapper.addEventListener('click', (e) => {
+    inspector.getAction(e.target);
+});

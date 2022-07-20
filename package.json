@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
+    "watch": "forever -w ./src/js/server.js",
     "lint": "eslint .",
     "test": "jest ./src/js/__tests__/testJest",
     "coverage": "jest --coverage",
@@ -38,6 +39,10 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "core-js": "^3.6.5"
+    "@koa/cors": "^3.3.0",
+    "core-js": "^3.6.5",
+    "forever": "^4.0.3",
+    "koa": "^2.13.4",
+    "koa-body": "^5.0.0"
   }
 }

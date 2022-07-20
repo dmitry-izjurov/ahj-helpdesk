@@ -1,5 +1,205 @@
-.body {
-    padding: 0;
+body {
+    box-sizing: border-box;
+    padding: 15px;
     margin: 0;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: rgb(249, 251, 252);
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wrapper__popup::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.25;
+    background-color: #000000;
+}
+
+.popup {
+    position: fixed;
+    margin: auto;
+    width: 700px;
+    height: 400px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    border: 2px solid green;
+    background-color: rgb(227, 252, 217);  
+}
+
+.popup_edit {
+    border: 2px solid orange;
+    background-color: rgb(252, 243, 217);
+}
+
+.popup_delete {
+    height: 180px;
+    border: 2px solid red;
+    background-color: rgb(252, 217, 217);
+}
+
+.form__header {
+    text-align: center;
+    font-size: 22px;
+    margin: 20px 0 20px 0;
+}
+
+.field-group, #delete-text {
+    display: block;
+    margin: 15px;
+}
+
+.field-label {
+    display: block;
+}
+
+.text_form {
+    padding: 5px 0 5px 0;
+    font-size: 20px;
+}
+
+.field, .textarea {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+}
+
+.field:hover, .textarea:hover, .field:focus, .textarea:focus {
+    outline: none;
+    border-color: #719ECE;
+}
+
+.textarea {
+    width: 100%;
+    height: 130px;
+    resize: none;
+}
+
+.block-buttons {
+    width: 240px;
+    margin-left: auto;
+}
+
+.form__buttons {
+    font-family: inherit;
+    width: 110px;
+    font-size: 22px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+}
+
+.form__button-reset:hover {
+    background-color: rgb(255, 185, 185);
+}
+
+.form__button:hover {
+    background-color: rgb(255, 224, 183);
+}
+
+.button_add {
+    width: 250px;
+    margin-bottom: 20px;
+    padding: 15px;
+    align-self: flex-end;
+    font-size: 22px;
+    font-family: inherit;
+    background-color: antiquewhite;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button:hover, .button_edit:hover, .button_remove:hover {
+    background-color: rgb(255, 224, 183);
+}
+
+.list {
+    margin: 0;
+    list-style-type: none;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    padding: 10px 15px 10px 10px;
+    background-color: rgb(208, 224, 255);
+}
+
+.item:nth-last-child() {
+    margin-bottom: 0;
+}
+
+.wrapper__block-content {
+    width: 60%;
+}
+
+.block_checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.text {
+    margin-left: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.text:hover {
+    color: red;
+}
+
+.block_edit {
+    display: flex;
+    align-items: center;
+}
+
+.time {
+    margin-right: 30px;
+    font-size: 22px;
+}
+
+.button_edit, .button_remove {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: antiquewhite;
+    cursor: pointer;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.button_remove {
+    margin-left: 15px;
+}
+
+.hidden {
+    display: none;
 }
