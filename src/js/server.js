@@ -1,9 +1,8 @@
 const http = require('http');
-const port = 7071;
+const port = 7070;
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const cors = require('@koa/cors');
-let idTicket = 0;
 const tickets = [];
 const ticketsFull = [];
 
@@ -33,13 +32,11 @@ class TicketFull extends Ticket {
 }
 
 tickets.push(new Ticket(1, 'Поменять краску в принтере', false, getDate()));
-ticketsFull.push(new TicketFull(1, 'Поменять краску в принтере', false, getDate(), 'Поменять краску в принтере'));
+ticketsFull.push(new TicketFull(1, 'Поменять краску в принтере', false, getDate(), 'Поменять краску в принтере LaserJet 1320'));
 tickets.push(new Ticket(2, 'Переустановить Windows', false, getDate()));
-ticketsFull.push(new TicketFull(2, 'Переустановить Windows', false, getDate(), 'Переустановить Windows'));
+ticketsFull.push(new TicketFull(2, 'Переустановить Windows', false, getDate(), 'Переустановить Windows 10'));
 tickets.push(new Ticket(3, 'Установить обновление', true, getDate()));
-ticketsFull.push(new TicketFull(3, 'Установить обновление', true, getDate(), 'Установить обновление'));
-idTicket = 3;
-
+ticketsFull.push(new TicketFull(3, 'Установить обновление', true, getDate(), 'Установить обновление KB5005565'));
 
 const app = new Koa();
 app.use(cors());
@@ -63,18 +60,42 @@ app.use(async (ctx) => {
       return;
     
     case `method=ticketById&id=${id}`:
-      ctx.response.body = ticketsFull[id - 1];
+      if (Object.keys(ctx.request.body).length !== 0) {
+        const index = tickets.findIndex(a => a.id === Number(id));
+
+        tickets[index].name = ctx.request.body.text;
+        ticketsFull[index].name = ctx.request.body.text;
+        ticketsFull[index].description = ctx.request.body.textarea;
+      } 
+
+      ctx.response.body = ticketsFull[ticketsFull.findIndex(a => a.id === id)];
+      console.log(ctx.response.body);
       return;
     
     case 'method=createTicket':
-      tickets.push(new Ticket(addId(idTicket), 122, false, getDate()));
+      let idTicket = 0;
+      let idArr = [];
+      tickets.forEach(a => idArr.push(a.id));
+      if (idArr.length !== 0) {
+        idTicket = Math.max.apply(null, idArr);
+      }
+      tickets.push(new Ticket(addId(idTicket), ctx.request.body.text, false, getDate()));
+      ticketsFull.push(new TicketFull(addId(idTicket), ctx.request.body.text, true, getDate(), ctx.request.body.textarea));
+      ctx.response.body = tickets;
+      return;
+
+    case 'method=deleteTicket':
+      const index = tickets.findIndex(a => a.id === Number(ctx.request.body.id));
+      tickets.splice(index, 1);
+      ticketsFull.splice(index, 1);
       ctx.response.body = tickets;
       return;
 
     default:
-      ctx.response.status = 200;
+      ctx.response.status = 404;
       return;
     }
+
 });
 
 const server = http.createServer(app.callback()).listen(port);

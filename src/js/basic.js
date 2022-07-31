@@ -5,5 +5,5 @@ const inspector = new Inspector();
 inspector.getServer();
 
 elemWrapper.addEventListener('click', (e) => {
-    inspector.getAction(e.target);
+  inspector.getAction(e.target);
 });

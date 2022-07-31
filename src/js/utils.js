@@ -1,8 +1,8 @@
 export const elemList = document.querySelector('.list');
 export const elemWrapper = document.querySelector('.wrapper');
 
-export const elemLi = function(text, time, status, id) {
-    return `
+export const elemLi = function (text, time, status, id) {
+  return `
     <li class="item">
     <div class="wrapper__block-content">
       <div class="block_checkbox">
@@ -47,20 +47,18 @@ export const elemLi = function(text, time, status, id) {
       </div>
     </div>
   </li>
-    `
-}
+    `;
+};
 
-export const getFullText = function(fullText) {
+export const getFullText = function (fullText) {
   return `
-  <div class="block-fullcontent hidden">
+  <div class="block-fullcontent">
     <p class="text">
       ${fullText}
     </p>
   </div>
-  `
-}
-
-
+  `;
+};
 
 export const formAddTicket = `
 <div class="wrapper__popup">
@@ -69,11 +67,11 @@ export const formAddTicket = `
       <header class="form__header">Добавить тикет</header>
       <label class="field-group">
         <span class="field-label text_form">Краткое описание</span>
-        <input type="text" class="field" minlength="2" maxlength="30" required>
+        <input type="text" name="text" class="field" minlength="2" maxlength="30" required>
       </label>
       <label class="field-group">
         <span class="field-label text_form">Подробное описание</span>
-        <textarea class="textarea" required></textarea>
+        <textarea class="textarea" name="textarea" required></textarea>
       </label>
       <div class="block-buttons">
         <button class="form__button-reset form__buttons" type="reset">Отмена</button>
@@ -84,27 +82,29 @@ export const formAddTicket = `
 </div>
 `;
 
-export const formEditTicket = `
-<div class="wrapper__popup">
-  <div class="popup popup_edit">
-    <form class="form" name="edit-ticket">
-      <header class="form__header">Изменить тикет</header>
-      <label class="field-group">
-        <span class="field-label text_form">Краткое описание</span>
-        <input type="text" class="field" minlength="2" maxlength="30" required>
-      </label>
-      <label class="field-group">
-        <span class="field-label text_form">Подробное описание</span>
-        <textarea class="textarea" required></textarea>
-      </label>
-      <div class="block-buttons">
-        <button class="form__button-reset form__buttons" type="reset">Отмена</button>
-        <button class="form__button form__buttons">Ок</button>
-      </div>
-    </form>
+export const formEditTicket = function (text, fullText) {
+  return `
+  <div class="wrapper__popup">
+    <div class="popup popup_edit">
+      <form class="form" name="edit-ticket">
+        <header class="form__header">Изменить тикет</header>
+        <label class="field-group">
+          <span class="field-label text_form">Краткое описание</span>
+          <input type="text" name="text" class="field" minlength="2" maxlength="30" value="${text}" required>
+        </label>
+        <label class="field-group">
+          <span class="field-label text_form">Подробное описание</span>
+          <textarea class="textarea" name="textarea" required>${fullText}</textarea>
+        </label>
+        <div class="block-buttons">
+          <button class="form__button-reset form__buttons" type="reset">Отмена</button>
+          <button class="form__button form__buttons">Ок</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
-`;
+  `;
+};
 
 export const formDeleteTicket = `
 <div class="wrapper__popup">

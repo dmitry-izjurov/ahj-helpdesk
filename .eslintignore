@@ -1,4 +1,4 @@
 dist
 coverage
 docs
-src
+server.js
